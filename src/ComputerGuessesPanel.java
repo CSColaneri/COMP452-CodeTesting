@@ -24,6 +24,7 @@ public class ComputerGuessesPanel extends JPanel {
         numGuesses = 0;
         upperBound = 1000;
         lowerBound = 1;
+        lastGuess = 0; // new
 
         this.setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
 
@@ -40,12 +41,14 @@ public class ComputerGuessesPanel extends JPanel {
         this.add(Box.createRigidArea(new Dimension(0,10)));
 
         JButton lowerBtn = new JButton("Lower");
+        // TODO: Calculation, Repeated, get this from somewhere else
         lowerBtn.addActionListener(e -> {
-            upperBound = Math.min(upperBound, lastGuess);
-
-            lastGuess = (lowerBound + upperBound + 1) / 2;
-            numGuesses += 1;
-            guessMessage.setText("I guess " + lastGuess + ".");
+//            upperBound = Math.min(upperBound, lastGuess);
+//
+//            lastGuess = (lowerBound + upperBound + 1) / 2;
+//            numGuesses += 1;
+//            guessMessage.setText("I guess " + lastGuess + ".");
+            makeGuess(guessMessage, false);
         });
         this.add(lowerBtn);
         lowerBtn.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -68,26 +71,74 @@ public class ComputerGuessesPanel extends JPanel {
 
         JButton higherBtn = new JButton("Higher");
         higherBtn.addActionListener(e -> {
-            lowerBound = Math.max(lowerBound, lastGuess + 1);
-
-            lastGuess = (lowerBound + upperBound + 1) / 2;
-            numGuesses += 1;
-            guessMessage.setText("I guess " + lastGuess + ".");
+//            lowerBound = Math.max(lowerBound, lastGuess + 1);
+//
+//            lastGuess = (lowerBound + upperBound + 1) / 2;
+//            numGuesses += 1;
+//            guessMessage.setText("I guess " + lastGuess + ".");
+            makeGuess(guessMessage, true);
         });
         this.add(higherBtn);
         higherBtn.setAlignmentX(Component.CENTER_ALIGNMENT);
 
 
+        // TODO: Initial guess. Happens only once.
         this.addComponentListener(new java.awt.event.ComponentAdapter() {
             public void componentShown(java.awt.event.ComponentEvent e) {
-                numGuesses = 0;
-                upperBound = 1000;
-                lowerBound = 1;
-
-                lastGuess = (lowerBound + upperBound + 1) / 2;
-                guessMessage.setText("I guess " + lastGuess + ".");
+//                numGuesses = 0;
+//                upperBound = 1000;
+//                lowerBound = 1;
+//
+//                lastGuess = (lowerBound + upperBound + 1) / 2;
+//                guessMessage.setText("I guess " + lastGuess + ".");
+                makeGuess(guessMessage, true);
             }
         });
     }
 
+    /**
+     * Returns the current upper boundary for the computer's guesses.
+     * @return Returns the current upper boundary for the computer's guesses.
+     */
+    public int getUpperBound() {return this.upperBound;}
+
+    /**
+     * Returns the current lower boundary for the computer's guesses.
+     * @return Returns the current lower boundary for the computer's guesses.
+     */
+    public int getLowerBound() {return this.lowerBound;}
+
+    private void makeGuess(JLabel guessMessage, boolean higher) {
+        updateGuessLabel(guessMessage, updateBounds(higher));
+    }
+
+    /**
+     * Updates the lowerBound or upperBound based on whether the computers last
+     * guess was {@code higher} than the actual number or not.
+     *
+     * @param higher True if the computer's guess was too high, false if it was
+     *               too low.
+     * @return The computer's new guess.
+     */
+    private int updateBounds(boolean higher) {
+        if(higher) {
+            lowerBound = Math.max(lowerBound, this.lastGuess + 1);
+        } else {
+            upperBound = Math.min(upperBound, this.lastGuess);
+        }
+        this.lastGuess = (lowerBound + upperBound + 1) / 2;
+        this.numGuesses += 1;
+        return lastGuess;
+    }
+
+    /**
+     * Updates the given JLabel {@param guessMessage} that dipslays
+     * the computer's guess
+     * @param guessMessage
+     * @return
+     */
+    private JLabel updateGuessLabel(JLabel guessMessage, int lastGuess) {
+        guessMessage.setText("I guess " + lastGuess + ".");
+        return guessMessage;
+    }
 }
