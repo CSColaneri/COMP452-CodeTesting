@@ -68,7 +68,8 @@ public class GameOverPanel extends JPanel {
     /**
      * Sets the game results, updates the UI, and saves results to the log file (if human was playing)
      */
-    // TODO: refactor this method
+    // TODO: setGameOver has been refactored to the 4 functions below: handleGameOver, setGameOver,
+    //  writeToFile, and updateUi
     public void handleGameOver(GameResult result){
         setGameResult(result);
 
