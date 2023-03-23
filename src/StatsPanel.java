@@ -5,17 +5,13 @@ import java.util.ArrayList;
 /**
  * Displays statistics about how many guesses the person took during past games
  * Loads data from the file and displays in a JPanel
- *
- * TODO: refactor this class
  */
 public class StatsPanel extends JPanel {
-
-    private final JPanel resultsPanel;
 
     // Stats will display the number of games in each "bin"
     // A bin goes from BIN_EDGES[i] through BIN_EDGES[i+1]-1, inclusive
     private static final int [] BIN_EDGES = {1, 2, 4, 6, 8, 10, 12, 14};
-    private ArrayList<JLabel> resultsLabels;
+    private final ArrayList<JLabel> resultsLabels;
 
     public StatsPanel(JPanel cardsPanel) {
 
@@ -31,34 +27,12 @@ public class StatsPanel extends JPanel {
 
         this.add(Box.createRigidArea(new Dimension(0,40)));
 
-        resultsPanel = new JPanel();
+        JPanel resultsPanel = new JPanel();
+
         resultsLabels = new ArrayList<>();
-        resultsPanel.setLayout(new GridLayout(0, 2));
-        resultsPanel.add(new JLabel("Guesses"));
-        resultsPanel.add(new JLabel("Games"));
-        for(int binIndex=0; binIndex<BIN_EDGES.length; binIndex++){
-            String binName;
-            if(binIndex == BIN_EDGES.length-1){
-                // last bin
-                binName = BIN_EDGES[binIndex] + " or more";
-            }
-            else{
-                int upperBound = BIN_EDGES[binIndex+1] - 1;
-                if(upperBound > BIN_EDGES[binIndex]){
-                    binName = BIN_EDGES[binIndex] + "-" + upperBound;
-                }
-                else{
-                    binName = Integer.toString(BIN_EDGES[binIndex]);
-                }
-            }
 
-            resultsPanel.add(new JLabel(binName));
-            JLabel result = new JLabel("--");
-            resultsLabels.add(result);
-            resultsPanel.add(result);
-        }
+        buildResultsPanelAndLabel(resultsPanel, resultsLabels);
 
-        resultsPanel.setMinimumSize(new Dimension(120, 120));
         this.add(resultsPanel);
         resultsPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
         updateResultsPanel();
@@ -81,6 +55,35 @@ public class StatsPanel extends JPanel {
                 updateResultsPanel();
             }
         });
+    }
+
+    private void buildResultsPanelAndLabel(JPanel rP, ArrayList<JLabel> rL)
+    {
+        rP.setLayout(new GridLayout(0, 2));
+        rP.add(new JLabel("Guesses"));
+        rP.add(new JLabel("Games"));
+        for(int binIndex=0; binIndex<BIN_EDGES.length; binIndex++){
+            String binName;
+            if(binIndex == BIN_EDGES.length-1){
+                // last bin
+                binName = BIN_EDGES[binIndex] + " or more";
+            }
+            else{
+                int upperBound = BIN_EDGES[binIndex+1] - 1;
+                if(upperBound > BIN_EDGES[binIndex]){
+                    binName = BIN_EDGES[binIndex] + "-" + upperBound;
+                }
+                else{
+                    binName = Integer.toString(BIN_EDGES[binIndex]);
+                }
+            }
+
+            rP.add(new JLabel(binName));
+            JLabel result = new JLabel("--");
+            rL.add(result);
+            rP.add(result);
+            rP.setMinimumSize(new Dimension(120, 120));
+        }
     }
 
 
