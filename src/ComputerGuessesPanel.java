@@ -85,9 +85,10 @@ public class ComputerGuessesPanel extends JPanel {
         // TODO: Initial guess. Happens only once.
         this.addComponentListener(new java.awt.event.ComponentAdapter() {
             public void componentShown(java.awt.event.ComponentEvent e) {
-//                numGuesses = 0;
-//                upperBound = 1000;
-//                lowerBound = 1;
+                numGuesses = 0;
+                upperBound = 1000;
+                lowerBound = 1;
+                lastGuess=0; // new
 //
 //                lastGuess = (lowerBound + upperBound + 1) / 2;
 //                guessMessage.setText("I guess " + lastGuess + ".");
@@ -132,10 +133,10 @@ public class ComputerGuessesPanel extends JPanel {
     }
 
     /**
-     * Updates the given JLabel {@param guessMessage} that dipslays
+     * Updates the given JLabel {@param guessMessage} that displays
      * the computer's guess
-     * @param guessMessage
-     * @return
+     * @param guessMessage the JLabel to update with the given guess {@code lastGuess}
+     * @return a reference to the given JLabel {@code guessMessage}
      */
     private JLabel updateGuessLabel(JLabel guessMessage, int lastGuess) {
         guessMessage.setText("I guess " + lastGuess + ".");
