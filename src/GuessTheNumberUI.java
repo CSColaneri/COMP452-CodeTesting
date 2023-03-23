@@ -67,7 +67,7 @@ public class GuessTheNumberUI {
         // TODO: Old. Refactored gameOverPanel.setGameOver(...) to what it is below.
         // HINT: Look at what GameOverPanel.setGameResults does now. Your code should do the same operations,
         //       but refactor how those are structured, which means the lambda will need to change.
-        JPanel humanGuessesPanel = new HumanGuessesPanel(cardsPanel, gameResult -> {gameOverPanel.handleGameOver(gameResult);});
+        JPanel humanGuessesPanel = new HumanGuessesPanel(cardsPanel, gameOverPanel::handleGameOver);
         addToCards(cardsPanel, humanGuessesPanel, ScreenID.HUMAN_PLAY.name());
 
         // COMPUTER_PLAY_LAUNCH
@@ -75,7 +75,7 @@ public class GuessTheNumberUI {
         addToCards(cardsPanel, computerPlayLaunchPanel, ScreenID.COMPUTER_PLAY_LAUNCH.name());
 
         // COMPUTER_PLAY
-        JPanel computerGuessesPanel = new ComputerGuessesPanel(cardsPanel, gameResult -> {gameOverPanel.handleGameOver(gameResult);});
+        JPanel computerGuessesPanel = new ComputerGuessesPanel(cardsPanel, gameOverPanel::handleGameOver);
         addToCards(cardsPanel, computerGuessesPanel, ScreenID.COMPUTER_PLAY.name());
 
         // STATS
