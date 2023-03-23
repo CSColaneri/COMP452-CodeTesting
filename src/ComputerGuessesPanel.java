@@ -97,16 +97,12 @@ public class ComputerGuessesPanel extends JPanel {
         });
     }
 
-    /**
-     * Returns the current upper boundary for the computer's guesses.
-     * @return Returns the current upper boundary for the computer's guesses.
-     */
+    public int getNumGuesses() {return this.numGuesses;}
+
+    public int getLastGuess() {return this.lastGuess;}
+
     public int getUpperBound() {return this.upperBound;}
 
-    /**
-     * Returns the current lower boundary for the computer's guesses.
-     * @return Returns the current lower boundary for the computer's guesses.
-     */
     public int getLowerBound() {return this.lowerBound;}
 
     private void makeGuess(JLabel guessMessage, boolean higher) {
