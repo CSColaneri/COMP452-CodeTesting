@@ -1,10 +1,12 @@
 import com.opencsv.CSVReader;
 import com.opencsv.exceptions.CsvValidationException;
 
+import javax.swing.*;
 import java.io.FileReader;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeParseException;
+import java.util.ArrayList;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
@@ -53,6 +55,30 @@ public class StatsFile extends GameStats {
             // NOTE: In a full implementation, we would log this error and alert the user
             // NOTE: For this project, you do not need unit tests for handling this exception.
         }
+    }
+
+    public ArrayList<Integer> resultsPanelData(int [] bin_edges){
+        ArrayList<Integer> data = new ArrayList<Integer>();
+        for(int binIndex=0; binIndex<bin_edges.length; binIndex++){
+            final int lowerBound = bin_edges[binIndex];
+            int numGames = 0;
+
+            if(binIndex == bin_edges.length-1){
+                // last bin
+                // Sum all the results from lowerBound on up
+                for(int numGuesses=lowerBound; numGuesses<maxNumGuesses(); numGuesses++){
+                    numGames += numGames(numGuesses);
+                }
+            }
+            else{
+                int upperBound = bin_edges[binIndex+1];
+                for(int numGuesses=lowerBound; numGuesses <= upperBound; numGuesses++) {
+                    numGames += numGames(numGuesses);
+                }
+            }
+            data.add(numGames);
+        }
+        return data;
     }
 
     @Override
