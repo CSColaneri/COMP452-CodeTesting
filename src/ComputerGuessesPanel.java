@@ -12,19 +12,19 @@ import java.util.function.Consumer;
  */
 public class ComputerGuessesPanel extends JPanel {
 
-    private int numGuesses;
-    private int lastGuess;
-
-    // upperBound and lowerBound track the computer's knowledge about the correct number
-    // They are updated after each guess is made
-    private int upperBound; // correct number is <= upperBound
-    private int lowerBound; // correct number is >= lowerBound
-
+//    private int numGuesses;
+//    private int lastGuess;
+//
+//    // upperBound and lowerBound track the computer's knowledge about the correct number
+//    // They are updated after each guess is made
+//    private int upperBound; // correct number is <= upperBound
+//    private int lowerBound; // correct number is >= lowerBound
+    private ComputerGuessesGame game;
     public ComputerGuessesPanel(JPanel cardsPanel, Consumer<GameResult> gameFinishedCallback){
-        numGuesses = 0;
-        upperBound = 1000;
-        lowerBound = 1;
-        lastGuess = 0; // new
+        game = new ComputerGuessesGame();
+//        upperBound=1000;
+//        lowerBound=1;
+//        numGuesses=0;
 
         this.setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
 
@@ -41,14 +41,14 @@ public class ComputerGuessesPanel extends JPanel {
         this.add(Box.createRigidArea(new Dimension(0,10)));
 
         JButton lowerBtn = new JButton("Lower");
-        // TODO: Calculation, Repeated, get this from somewhere else
+
         lowerBtn.addActionListener(e -> {
 //            upperBound = Math.min(upperBound, lastGuess);
 //
 //            lastGuess = (lowerBound + upperBound + 1) / 2;
 //            numGuesses += 1;
 //            guessMessage.setText("I guess " + lastGuess + ".");
-            makeGuess(guessMessage, false);
+            guessMessage.setText("I guess " + game.makeNextGuess(false) + ".");
         });
         this.add(lowerBtn);
         lowerBtn.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -59,7 +59,7 @@ public class ComputerGuessesPanel extends JPanel {
             guessMessage.setText("I guess ___.");
 
             // Send the result of the finished game to the callback
-            GameResult result = new GameResult(false, lastGuess, numGuesses);
+            GameResult result = new GameResult(false, game.getNumGuesses(), game.getNumGuesses());
             gameFinishedCallback.accept(result);
 
             CardLayout cardLayout = (CardLayout) cardsPanel.getLayout();
@@ -76,66 +76,19 @@ public class ComputerGuessesPanel extends JPanel {
 //            lastGuess = (lowerBound + upperBound + 1) / 2;
 //            numGuesses += 1;
 //            guessMessage.setText("I guess " + lastGuess + ".");
-            makeGuess(guessMessage, true);
+            guessMessage.setText("I guess " + game.makeNextGuess(true) + ".");
         });
         this.add(higherBtn);
         higherBtn.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-
-        // TODO: Initial guess. Happens only once.
         this.addComponentListener(new java.awt.event.ComponentAdapter() {
             public void componentShown(java.awt.event.ComponentEvent e) {
-                numGuesses = 0;
-                upperBound = 1000;
-                lowerBound = 1;
-                lastGuess=0; // new
+                game = new ComputerGuessesGame();
 //
 //                lastGuess = (lowerBound + upperBound + 1) / 2;
 //                guessMessage.setText("I guess " + lastGuess + ".");
-                makeGuess(guessMessage, true);
+                guessMessage.setText("I guess " + game.makeNextGuess(true) + ".");
             }
         });
-    }
-
-    public int getNumGuesses() {return this.numGuesses;}
-
-    public int getLastGuess() {return this.lastGuess;}
-
-    public int getUpperBound() {return this.upperBound;}
-
-    public int getLowerBound() {return this.lowerBound;}
-
-    private void makeGuess(JLabel guessMessage, boolean higher) {
-        updateGuessLabel(guessMessage, updateBounds(higher));
-    }
-
-    /**
-     * Updates the lowerBound or upperBound based on whether the computers last
-     * guess was {@code higher} than the actual number or not.
-     *
-     * @param higher True if the computer's guess was too high, false if it was
-     *               too low.
-     * @return The computer's new guess.
-     */
-    private int updateBounds(boolean higher) {
-        if(higher) {
-            lowerBound = Math.max(lowerBound, this.lastGuess + 1);
-        } else {
-            upperBound = Math.min(upperBound, this.lastGuess);
-        }
-        this.lastGuess = (lowerBound + upperBound + 1) / 2;
-        this.numGuesses += 1;
-        return lastGuess;
-    }
-
-    /**
-     * Updates the given JLabel {@param guessMessage} that displays
-     * the computer's guess
-     * @param guessMessage the JLabel to update with the given guess {@code lastGuess}
-     * @return a reference to the given JLabel {@code guessMessage}
-     */
-    private JLabel updateGuessLabel(JLabel guessMessage, int lastGuess) {
-        guessMessage.setText("I guess " + lastGuess + ".");
-        return guessMessage;
     }
 }
