@@ -62,19 +62,12 @@ public class StatsFile extends GameStats {
         for(int binIndex=0; binIndex<bin_edges.length; binIndex++){
             final int lowerBound = bin_edges[binIndex];
             int numGames = 0;
-
-            if(binIndex == bin_edges.length-1){
-                // last bin
-                // Sum all the results from lowerBound on up
-                for(int numGuesses=lowerBound; numGuesses<maxNumGuesses(); numGuesses++){
-                    numGames += numGames(numGuesses);
-                }
+            int upperBound = maxNumGuesses();
+            if(binIndex != bin_edges.length-1){
+                upperBound = bin_edges[binIndex+1];
             }
-            else{
-                int upperBound = bin_edges[binIndex+1];
-                for(int numGuesses=lowerBound; numGuesses <= upperBound; numGuesses++) {
-                    numGames += numGames(numGuesses);
-                }
+            for(int numGuesses=lowerBound; numGuesses<upperBound; numGuesses++){
+                numGames += numGames(numGuesses);
             }
             data.add(numGames);
         }
