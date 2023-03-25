@@ -58,7 +58,7 @@ public class StatsFile extends GameStats {
     }
 
     public ArrayList<Integer> resultsPanelData(int [] bin_edges){
-        ArrayList<Integer> data = new ArrayList<Integer>();
+        ArrayList<Integer> data = new ArrayList<>();
         for(int binIndex=0; binIndex<bin_edges.length; binIndex++){
             final int lowerBound = bin_edges[binIndex];
             int numGames = 0;
