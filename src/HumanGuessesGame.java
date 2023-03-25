@@ -9,9 +9,9 @@ import java.util.Random;
 public class HumanGuessesGame {
     public final static int UPPER_BOUND = 1000;
 
-    private final int target;
-    private int numGuesses;
-    private boolean gameIsDone; // true iff makeGuess has been called with the target value
+    protected int target;
+    protected int numGuesses;
+    protected boolean gameIsDone; // true iff makeGuess has been called with the target value
 
     HumanGuessesGame(){
         Random randGen = new Random();
