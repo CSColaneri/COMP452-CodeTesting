@@ -30,12 +30,12 @@ public class ComputerGuessesGame {
     /**
      * Updates the bounds and makes the computer's next guess.
      *
-     * @param tooHigh True if the computer's guess was too high, false if it was
-     *               too low.
+     * @param tooLow True if the computer's guess was too low, false if it was
+     *               too high.
      * @return The computer's new guess.
      */
-    public int makeNextGuess(boolean tooHigh) {
-        updateBounds(tooHigh);
+    public int makeNextGuess(boolean tooLow) {
+        updateBounds(tooLow);
         this.lastGuess = (lowerBound + upperBound + 1) / 2;
         this.numGuesses += 1;
         return lastGuess;
@@ -43,12 +43,12 @@ public class ComputerGuessesGame {
 
     /**
      * Updates the bounds based on whether the previous guess was
-     * {@code higher} than the correct answer or not.
+     * {@code tooLow} than the correct answer or not.
      *
-     * @param tooHigh true if the computer's guess was too high, otherwise false.
+     * @param tooLow true if the computer's guess was too low, otherwise false.
      */
-    public void updateBounds(boolean tooHigh) {
-        if(tooHigh) {
+    public void updateBounds(boolean tooLow) {
+        if(tooLow) {
             lowerBound = Math.max(lowerBound, this.lastGuess + 1);
         } else {
             upperBound = Math.min(upperBound, this.lastGuess);
